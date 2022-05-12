@@ -1,0 +1,10 @@
+const myQuery = `
+  {
+    user {
+      firstName
+      lastName
+    }
+  }
+`
+
+const query = `www.myserver.com/query=${urlEncode(myQuery)}`

@@ -1,0 +1,39 @@
+{
+    "data":{
+       "boards":[
+          {
+             "groups":[
+                {
+                   "id":"matalot5384",
+                   "title":"matalot",
+                   "archived":"None",
+                   "deleted":"None",
+                   "color":"#037f4c"
+                },
+                {
+                   "id":"topics",
+                   "title":"Courses",
+                   "archived":"None",
+                   "deleted":"None",
+                   "color":"#579bfc"
+                },
+                {
+                   "id":"group_title",
+                   "title":"Group Title",
+                   "archived":"None",
+                   "deleted":"None",
+                   "color":"#a25ddc"
+                },
+                {
+                   "id":"new_group",
+                   "title":"topics",
+                   "archived":"None",
+                   "deleted":"None",
+                   "color":"#CAB641"
+                }
+             ]
+          }
+       ]
+    },
+    "account_id":11875922
+ }"PS C":"\\git\\university_CS\\Studencity>"
