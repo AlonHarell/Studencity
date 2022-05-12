@@ -1,18 +1,13 @@
 
-# returns list of (course_id, course_name)
-def get_course_list() -> list[(int, str)]:
-    return []
+#filename would be: username_moodle.something
+#if file alredy exists, update the assignemnt in it
+
+def write_moodle_file(username:str, course_name:str, course_id:str, assignmet_url:str, assignment_name:str, assignment_deadline:str, paths:list):
+    pass
 
 
-# returns list of (resource_name, resource_type, resource_link, resource_course)
-def get_course_resources() -> list[(str, int, str)]:
-    RESTYPE_ASSIGNMENT = 1
-    RESTYPE_FORUM = 2
-    RESTYPE_DOCUMENT = 3
+def read_moodle_file(filepath):
+    pass
 
-    return []
-
-
-def get_resource_assignment(resource_link) -> dict:
-    # given assignment link, return dict of assignment info (due_date etc...)
-    return dict()
+    #for each assignment in file:
+    #(username, course_name, course_id, assignemt_url, assignment_name, assignment_deadline, [paths of resources of assignment])
