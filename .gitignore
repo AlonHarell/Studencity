@@ -1,8 +1,8 @@
-*
-
+__pycache__
+.idea
+.vscode
 APIKey.py
 
 #Matan's stuff
-
 what.json
 test.py
