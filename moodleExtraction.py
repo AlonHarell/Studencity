@@ -11,6 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from selenium.common.exceptions import TimeoutException
 
+import os
 
 import moodleXpath
 
@@ -29,15 +30,19 @@ TIMEOUT = 30
 
 
 def driver_init_login(username, personalid, password) -> webdriver.Chrome:
+    fullpath = os.path.join(".", '\\Downloaded')
+    print(fullpath)
     #### ids
 
 
     ### options
     driver_options = webdriver.ChromeOptions()
-    driver_options.headless = False
+    driver_options.headless = True
+    driver_options.gpu = False
     driver_options.add_experimental_option("prefs", {
-    "download.default_directory" : ".\\Downloaded",
-    'profile.default_content_setting_values.automatic_downloads': 2,
+    "download.default_directory" : fullpath,
+    "download.prompt_for_download": False,
+    'profile.default_content_setting_values.automatic_downloads': 2
     })
     desired = driver_options.to_capabilities()
     desired['loggingPrefs'] = { 'performance': 'ALL'}
@@ -116,7 +121,7 @@ def driver_crawl_assignment(driver: webdriver.Chrome, url: str):
          driver.get(link)
 
      return [name,deadline,files_names,files_links]
-     #TODO: in final returned, should include url since interface sorts by URL
+
 
 
 def main():
