@@ -74,7 +74,6 @@ def xpath_get_assignment(html_str:str):
 
     files_names = content.xpath(query_get_files_names)
     files_links = content.xpath(query_get_files_links)
-    #TODO: remove my submissions
-    #TODO:
+
 
     return (name,deadline,files_names,files_links)
