@@ -2,31 +2,38 @@ import monday
 from monday import MondayClient
 import json
 from moodleGetFrom import get_course_list, get_course_resources, get_resource_assignment
-
-
-apiKey = "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjE2MDE2NjY2OSwidWlkIjozMDM4NjgyOSwiaWFkIjoiMjAyMi0wNS0xMlQwNzo1MzozNi4zNzBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTE4NzU5MjIsInJnbiI6InVzZTEifQ.lGl7qoVNCeKwzXloL2LF57elitPglyddpzyrTVC_Gx4"
+from APIKey import apiKey
 
 monday = MondayClient(apiKey)
 
-our_board = 2663355974
+#our_board = 2663355974
 
 # returns list of (resource_name, resource_type, resource_link)
 
 
-def get_groups_ids_by_name():
+def get_group_id_by_title(board, group_title):
     groups = monday.groups.get_groups_by_board(
-        [our_board])['data']['boards'][0]['groups']
-    gruops_ids = []
-    for i in range(len(groups)):
-        id = groups[i]['id']
-        gruops_ids.append(id)
+        [board])['data']['boards'][0]['groups']
+    for g in groups:
+        if g['title'] == group_title:
+            return g['id']
+    return None
 
 
-def get_assignments(group_assignment_id):
+def get_item_id_by_title(board, group_id, item_title):
+    items = monday.groups.get_items_by_group(board, group_id)
+
+
+def get_assignments(board, group_title):
+    group_assignment_id = get_group_id_by_title(board, group_title)
     resources = get_course_resources()
     assignments = [(x[0], x[2]) for x in resources if x[1] == 1]
     assignments_info = dict()
     for a in assignments:
-        assignments_info[a[0]] = get_resource_assignment(a[1])
-        monday.items.create_item(our_board, group_assignment_id, a[0])
+        a_name = a[0]
+        a_link = a[1]
+        assignments_info[a_name] = get_resource_assignment(a_link)
+        a_submit_date = assignments_info[a_name]['submition_date']
+        monday.items.create_item(board, group_assignment_id, a_name)
+        monday.items.change_item_value(board, a_name, )
     #print(monday.groups.get_items_by_group(our_board, 'matalot5384'))
