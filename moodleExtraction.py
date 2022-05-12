@@ -4,11 +4,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome import options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from selenium.common.exceptions import TimeoutException
+
 
 import moodleXpath
 
@@ -22,6 +24,7 @@ id_input_personalid = "Ecom_User_Pid"
 id_input_password = "Ecom_Password"
 id_login = "loginButton2"
 id_courses = "nav-drawer"
+id_assignment_box = "region-main"
 TIMEOUT = 30
 
 
@@ -30,12 +33,18 @@ def driver_init_login(username, personalid, password) -> webdriver.Chrome:
 
 
     ### options
-    driver_options = options.Options()
-    driver_options.headless = True
+    driver_options = webdriver.ChromeOptions()
+    driver_options.headless = False
+    driver_options.add_experimental_option("prefs", {
+    "download.default_directory" : ".\\Downloaded",
+    'profile.default_content_setting_values.automatic_downloads': 2,
+    })
+    desired = driver_options.to_capabilities()
+    desired['loggingPrefs'] = { 'performance': 'ALL'}
     service = Service(ChromeDriverManager().install())
 
     ### init driver
-    driver = webdriver.Chrome(service=service, options=driver_options)
+    driver = webdriver.Chrome(service=service, options=driver_options, desired_capabilities=desired)
 
     ### crawling
     print("Going to moodle")
@@ -79,22 +88,54 @@ def driver_get_courses(driver: webdriver.Chrome):
     sidebar = driver.find_element(By.ID,id_courses)
     sidebar_html_str = sidebar.get_attribute("innerHTML")
     res = moodleXpath.xpath_get_courses(sidebar_html_str)
-    print(res)
 
     return res
 
 
-def driver_course_crawl(driver: webdriver.Chrome, url: str):
-    driver.get()
+def driver_crawl_course(driver: webdriver.Chrome, url: str):
+    driver.get(url)
+    coursecontent = driver.find_element(By.CLASS_NAME,value="course-content")
+    course_html = coursecontent.get_attribute("innerHTML")
+    resources = moodleXpath.xpath_get_course_resources(course_html)
+    return resources
+
+
+def driver_crawl_assignment(driver: webdriver.Chrome, url: str):
+     driver.get(url)
+     try:
+         elem = WebDriverWait(driver, TIMEOUT).until(
+             EC.presence_of_element_located((By.ID, id_assignment_box)))
+     except TimeoutException:
+         print("Timeout!")
+         driver.quit()
+
+     html_str = driver.page_source
+     name, deadline, files_names, files_links = moodleXpath.xpath_get_assignment(html_str)
+
+     for link in files_links:
+         driver.get(link)
+
+     return [name,deadline,files_names,files_links]
+     #TODO: in final returned, should include url since interface sorts by URL
 
 
 def main():
+    assignments = []
     driver = driver_init_login(username="alonharell", personalid="318509403", password="TauWelcome27")
     courses = driver_get_courses(driver)
-    course_filter = lambda course_id: course_id.startswith("368")
+    course_filter = lambda cid: cid.startswith("368")
     for course in courses:
-        if (course_filter):
-            pass
+        course_id, course_name, course_link = course
+        if (course_filter(course_id)):
+            resources = driver_crawl_course(driver, course[2])
+            for resource in resources:
+                resource_name, resrouce_type, resource_id, resource_link = resource
+                if ("assign" in resrouce_type):
+                    #assignment_name, assignment_deadline, files_names, files_links = driver_crawl_assignment(driver,resource_link)
+                    print(driver_crawl_assignment(driver,resource_link))
+
+
+
 
     driver.quit()
 
