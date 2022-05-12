@@ -7,7 +7,7 @@ def get_course_list() -> list[(int,str)]:
 
 
 #returns list of (resource_name, resource_type, resource_link)
-def get_course_resources() -> list[(str,int,str)]:
+def get_course_resources(course_id:str) -> list[(str,int,str)]:
     RESTYPE_ASSIGNMENT = 1
     RESTYPE_FORUM = 2
     RESTYPE_DOCUMENT = 3
@@ -15,6 +15,6 @@ def get_course_resources() -> list[(str,int,str)]:
     return []
 
 
-def get_resource_assignment() -> dict:
+def get_resource_assignment(resource_link) -> dict:
 
     return dict()
