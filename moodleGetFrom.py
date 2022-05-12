@@ -6,8 +6,10 @@ def write_moodle_file(username:str, course_name:str, course_id:str, assignmet_ur
     pass
 
 
+
 def read_moodle_file(filepath):
     pass
 
     #for each assignment in file:
     #(username, course_name, course_id, assignemt_url, assignment_name, assignment_deadline, [paths of resources of assignment])
+
