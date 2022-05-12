@@ -3,9 +3,7 @@ from monday import MondayClient
 import json
 from moodleGetFrom import get_course_list, get_course_resources, get_resource_assignment
 
-
-apiKey = "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjE2MDE2NjY2OSwidWlkIjozMDM4NjgyOSwiaWFkIjoiMjAyMi0wNS0xMlQwNzo1MzozNi4zNzBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTE4NzU5MjIsInJnbiI6InVzZTEifQ.lGl7qoVNCeKwzXloL2LF57elitPglyddpzyrTVC_Gx4"
-
+from APIKey import apiKey
 monday = MondayClient(apiKey)
 
 our_board = 2663355974
