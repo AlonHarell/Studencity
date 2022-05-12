@@ -14,6 +14,7 @@ from selenium.common.exceptions import TimeoutException
 import os
 
 import moodleXpath
+import moodleGetFrom
 
 import time
 
@@ -29,9 +30,8 @@ id_assignment_box = "region-main"
 TIMEOUT = 30
 
 
-def driver_init_login(username, personalid, password) -> webdriver.Chrome:
-    fullpath = os.path.join(".", '\\Downloaded')
-    print(fullpath)
+def driver_init_login(username, personalid, password,path) -> webdriver.Chrome:
+
     #### ids
 
 
@@ -40,7 +40,7 @@ def driver_init_login(username, personalid, password) -> webdriver.Chrome:
     driver_options.headless = True
     driver_options.gpu = False
     driver_options.add_experimental_option("prefs", {
-    "download.default_directory" : fullpath,
+    "download.default_directory" : path,
     "download.prompt_for_download": False,
     'profile.default_content_setting_values.automatic_downloads': 2
     })
@@ -120,13 +120,19 @@ def driver_crawl_assignment(driver: webdriver.Chrome, url: str):
      for link in files_links:
          driver.get(link)
 
-     return [name,deadline,files_names,files_links]
+     return (name,deadline,files_names)
 
 
 
 def main():
+    dirname = os.path.dirname(__file__)
+    fullpath = os.path.join(dirname, 'Downloaded')
+    username="alonharell"
+    personalid="318509403"
+    password="TauWelcome27"
+    print(fullpath)
     assignments = []
-    driver = driver_init_login(username="alonharell", personalid="318509403", password="TauWelcome27")
+    driver = driver_init_login(username=username, personalid=personalid, password=password,path=fullpath)
     courses = driver_get_courses(driver)
     course_filter = lambda cid: cid.startswith("368")
     for course in courses:
@@ -137,8 +143,14 @@ def main():
                 resource_name, resrouce_type, resource_id, resource_link = resource
                 if ("assign" in resrouce_type):
                     #assignment_name, assignment_deadline, files_names, files_links = driver_crawl_assignment(driver,resource_link)
-                    print(driver_crawl_assignment(driver,resource_link))
+                    assignment_name,deadline,files_names = driver_crawl_assignment(driver,resource_link)
+                    assignments.append((username,course_name,course_id,resource_link,assignment_name,deadline,files_names))
 
+
+    for assignment in assignments:
+        username, course_name, course_id, resource_link, assignment_name, deadline, files_names = assignment
+        print((username, course_name, course_id, resource_link, assignment_name, deadline, files_names))
+        moodleGetFrom.write_moodle_file(username, course_name, course_id, resource_link, assignment_name, deadline, files_names)
 
 
 
