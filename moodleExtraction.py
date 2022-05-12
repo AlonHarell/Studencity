@@ -31,7 +31,7 @@ def driver_init_login(username, personalid, password) -> webdriver.Chrome:
 
     ### options
     driver_options = options.Options()
-    driver_options.headless = False
+    driver_options.headless = True
     service = Service(ChromeDriverManager().install())
 
     ### init driver
@@ -72,24 +72,30 @@ def driver_goto_moodle_main(driver: webdriver.Chrome):
         print("Timeout!")
         driver.quit()
 
+
     # Assuming sidebar is alive
 def driver_get_courses(driver: webdriver.Chrome):
     print("Getting courses")
     sidebar = driver.find_element(By.ID,id_courses)
     sidebar_html_str = sidebar.get_attribute("innerHTML")
     res = moodleXpath.xpath_get_courses(sidebar_html_str)
-    courses = []
-    for elem in res:
-        if (not elem.startswith("\n")):
-            courses.append(elem)
-            print(elem)
+    print(res)
 
-    return courses
+    return res
+
+
+def driver_course_crawl(driver: webdriver.Chrome, url: str):
+    driver.get()
 
 
 def main():
     driver = driver_init_login(username="alonharell", personalid="318509403", password="TauWelcome27")
-    driver_get_courses(driver)
+    courses = driver_get_courses(driver)
+    course_filter = lambda course_id: course_id.startswith("368")
+    for course in courses:
+        if (course_filter):
+            pass
+
     driver.quit()
 
 if __name__ == "__main__":
