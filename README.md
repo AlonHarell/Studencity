@@ -1,6 +1,10 @@
 # Studencity
-TAU-Monday Hackathon 2022
+TAU-Monday Hackathon 2022  
+Alon Harell, Nitzan Laufer, Matan Munk, Noam Blau, Hila Ilarov
 
-# How to basic
-1. copy `APIKeyDummy.py` and rename the copy to `APIKey.py`
-2. copy your api key provided by monday into `apiKey`
+
+# General Description
+The scripts get moodle login credentials, scrap moodle for the user's assignments and adds them to his courses boards on monday.
+
+# How to run
+py main.py {username} {personal_id} {password}
