@@ -29,7 +29,7 @@ def write_moodle_file(username:str, course_name:str, course_id:str, assignmet_ur
     }
 
     if not file_exists:
-        with open(user_filename, "a+") as user_file:
+        with open(user_filename, "a+",encoding="utf-8") as user_file:
             json.dump(user_moodle, user_file)
             return None
 
@@ -55,7 +55,7 @@ def write_moodle_file(username:str, course_name:str, course_id:str, assignmet_ur
 
 def read_moodle_file(filepath):
 
-  with open(filepath, 'r') as file:
+  with open(filepath, 'r',encoding="utf-8") as file:
     ret_val = []
     jsonfile = json.load(file)
     username = jsonfile['username']
@@ -66,5 +66,3 @@ def read_moodle_file(filepath):
             ret_val.append((username, course['course_name'], course['course_id'], asign['assignmet_url'], asign['assignment_name'], asign['assignment_deadline'],asign['paths']))
 
   return ret_val
-
-

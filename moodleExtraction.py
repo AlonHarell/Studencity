@@ -151,6 +151,3 @@ def main(username,personalid,password):
 
 
     driver.quit()
-
-#if __name__ == "__main__":
-#    main()
