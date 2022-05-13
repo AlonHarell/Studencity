@@ -70,16 +70,23 @@ def write_moodle_file(username:str, course_name:str, course_id:str, assignmet_ur
 
 
 def read_moodle_file(filepath):
-    json.load(filepath)
 
-    #for each assignment in file:
-    #(username, course_name, course_id, assignemt_url, assignment_name, assignment_deadline, [paths of resources of assignment])
+  with open(filepath, 'r') as file:
+    ret_val = []
+    jsonfile = json.load(file)
+    username = jsonfile['username']
+    for course in jsonfile["courses"]:
+      for key, val in course.items():
+        if key=="assignments":
+          for asign in val:
+            ret_val.append((username, course['course_name'], course['course_id'], asign['assignmet_url'], asign['assignment_name'], asign['assignment_deadline'],asign['paths']))
+
+  return ret_val
 
 
 
-
-print (write_moodle_file(username="balulu",course_name="new course 1",course_id="maroon6", assignmet_url="ricky this is my business", assignment_name="ze meatzben oti", assignment_deadline="mahar", paths=['TAU']))
-
+# print (write_moodle_file(username="balulu",course_name="new course 1",course_id="maroon6", assignmet_url="ricky this is my business", assignment_name="ze meatzben oti", assignment_deadline="mahar", paths=['TAU']))
+# print(read_moodle_file("./balulu_moodle.json"))
 # with open("./hi", "w") as thefile:
 #   json.dump("{\"sup\": 2}", thefile) 
 
