@@ -3,7 +3,6 @@ from monday import MondayClient
 import json
 
 import requests
-from moodleGetFrom import get_course_list, get_course_resources, get_resource_assignment
 
 from APIKey import apiKey
 monday = MondayClient(apiKey)
@@ -16,7 +15,9 @@ GROUP_NAME = 'Course Excercises'
 
 
 def get_board_id_by_name(board_name):
+    print(monday.boards.fetch_boards())
     boards = monday.boards.fetch_boards()['data']['boards']
+    print(boards)
     for b in boards:
         if(b['name'] == board_name):
             return b['id']
@@ -66,6 +67,7 @@ def change_col_val(itemID, boardID, colID, val):
     headers = {"Authorization": apiKey}
     data = {'query': query}
     r = requests.post(url=apiUrl, json=data, headers=headers)
+    print(r)
 
 
 def get_account_id(board_id):
@@ -100,26 +102,30 @@ def add_assignments_to_monday(assignments_list):
     for a in assignments_list:
         username = a[0]
         a_course = a[1]
+        a_course_id = a[2]
         a_url = a[3]
         a_name = a[4]
         a_submit_date = a[5]
         a_path_list = a[6]
-        a_board_id = get_board_id_by_name(a_course)
+        a_board_id = 2666624447  # get_board_id_by_name(a_course_id)
         a_group_id = get_group_id_by_title(a_board_id, GROUP_NAME)
         # adding new assignment item to course board
         monday.items.create_item(
             a_board_id, a_group_id, a_name)
         a_id = get_item_id_by_name(
             a_board_id, a_group_id, a_name)
+        print(a_id)
         # add submission date
         submit_date_col_id = get_column_id_by_board_id_and_title(
             a_board_id, 'Submission Date')
+        print(a_submit_date)
+        print(submit_date_col_id)
         change_col_val(a_id, a_board_id, submit_date_col_id, a_submit_date)
         # add files
-        files_col_id = get_column_id_by_board_id_and_title(
-            a_board_id, 'Files')
-        for f in a_path_list:
-            monday.items.add_file_to_column(a_id, files_col_id, f)
+        # files_col_id = get_column_id_by_board_id_and_title(
+        #     a_board_id, 'Files')
+        # for f in a_path_list:
+        #     monday.items.add_file_to_column(a_id, files_col_id, f)
         # add submission
         submission_col_id = get_column_id_by_board_id_and_title(
             a_board_id, 'Submission')
@@ -128,27 +134,27 @@ def add_assignments_to_monday(assignments_list):
 
 # Test for נושאים ב
  # adding new assignment item to course board
-a_board_id = 2666626328
-a_group_id = get_group_id_by_title(a_board_id, GROUP_NAME)
-a_name = 'aadsds'
-a_submit_date = '2000-12-04'
-monday.items.create_item(
-    a_board_id, a_group_id, a_name)
-a_id = get_item_id_by_name(
-    a_board_id, a_group_id, a_name)
-# add submission date
-submit_date_col_id = get_column_id_by_board_id_and_title(
-    a_board_id, 'Submission Date')
-change_col_val(a_id, a_board_id, submit_date_col_id, a_submit_date)
-# add files
-# files_col_id = get_column_id_by_board_id_and_title(
-#     a_board_id, 'Files')
-# for f in a_path_list:
-#     monday.items.add_file_to_column(a_id, files_col_id, f)
-# add submission
-submission_col_id = get_column_id_by_board_id_and_title(
-    a_board_id, 'Submission')
-print(change_col_val(a_id, a_group_id, submission_col_id, link))
+# a_board_id = 2666626328
+# a_group_id = get_group_id_by_title(a_board_id, GROUP_NAME)
+# a_name = 'aadsds'
+# a_submit_date = '2000-12-04'
+# monday.items.create_item(
+#     a_board_id, a_group_id, a_name)
+# a_id = get_item_id_by_name(
+#     a_board_id, a_group_id, a_name)
+# # add submission date
+# submit_date_col_id = get_column_id_by_board_id_and_title(
+#     a_board_id, 'Submission Date')
+# change_col_val(a_id, a_board_id, submit_date_col_id, a_submit_date)
+# # add files
+# # files_col_id = get_column_id_by_board_id_and_title(
+# #     a_board_id, 'Files')
+# # for f in a_path_list:
+# #     monday.items.add_file_to_column(a_id, files_col_id, f)
+# # add submission
+# submission_col_id = get_column_id_by_board_id_and_title(
+#     a_board_id, 'Submission')
+# print(change_col_val(a_id, a_group_id, submission_col_id, link))
 
 # group_id = get_group_id_by_title(2666626328, 'Course Excercises')
 # item_id = get_item_id_by_name(2666626328, group_id, 'EX222')
