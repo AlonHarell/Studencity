@@ -1,0 +1,3 @@
+# provide your own! do not upload your key to git
+# save as APIKey.py
+apiKey = "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjE2MDE2NjY2OSwidWlkIjozMDM4NjgyOSwiaWFkIjoiMjAyMi0wNS0xMlQwNzo1MzozNi4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTE4NzU5MjIsInJnbiI6InVzZTEifQ.UZ53Ktx6WM_ZINI4uMXrM14hr0oYIwwRaxY-4CdgV9k"
