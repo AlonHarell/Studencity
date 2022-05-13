@@ -124,12 +124,9 @@ def driver_crawl_assignment(driver: webdriver.Chrome, url: str):
 
 
 
-def main():
+def main(username,personalid,password):
     dirname = os.path.dirname(__file__)
     fullpath = os.path.join(dirname, 'Downloaded')
-    username="alonharell"
-    personalid="318509403"
-    password="TauWelcome27"
     print(fullpath)
     assignments = []
     driver = driver_init_login(username=username, personalid=personalid, password=password,path=fullpath)
@@ -153,8 +150,7 @@ def main():
         moodleGetFrom.write_moodle_file(username, course_name, course_id, resource_link, assignment_name, deadline, files_names)
 
 
-
     driver.quit()
 
-if __name__ == "__main__":
-    main()
+#if __name__ == "__main__":
+#    main()
